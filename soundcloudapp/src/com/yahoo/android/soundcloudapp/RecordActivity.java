@@ -95,23 +95,26 @@ public class RecordActivity extends FragmentActivity {
 		mRecorder.stop();
 		mRecorder.release();
 		mRecorder = null;
+		QuantityDialogFragment dialog = new QuantityDialogFragment();
+		dialog.show(getSupportFragmentManager(), "Give it a name");
+
+    }
+    
+	public void onNamePicked(String clipName) {
 		try {
 			File audioFile = new File(mFileName);
 			audioFile.setReadable(true, false);
-			Toast.makeText(this, "world readable: " + mFileName,
-					Toast.LENGTH_LONG).show();
-
+			Toast.makeText(this, "uploading to soundcloud...", Toast.LENGTH_SHORT).show();
 			HttpResponse resp = wrapper.post(Request.to(Endpoints.TRACKS)
-					.add(Params.Track.TITLE, audioFile.getName())
+					.add(Params.Track.TITLE, clipName)
 					.add(Params.Track.TAG_LIST, "demo upload")
 					.withFile(Params.Track.ASSET_DATA, audioFile));
 
 			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
 				Toast.makeText(
 						this,
-						"\n201 Created "
-								+ resp.getFirstHeader("Location").getValue()
-								+ ": " + mFileName, Toast.LENGTH_LONG).show();
+						"upload successful: "
+								+ ": " + clipName, Toast.LENGTH_LONG).show();
 			} else {
 				Toast.makeText(
 						this,
@@ -121,8 +124,6 @@ public class RecordActivity extends FragmentActivity {
 		} catch (Exception exp) {
 			Log.e("ERR", "ERR: " + exp.toString());
 		}
-
-    }
-    
+	}
 
 }
