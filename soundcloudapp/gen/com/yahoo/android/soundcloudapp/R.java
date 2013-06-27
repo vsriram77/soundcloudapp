@@ -22,25 +22,32 @@ public final class R {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
-        public static final int orig=0x7f020001;
-        public static final int recordbtn=0x7f020002;
-        public static final int recordbutton=0x7f020003;
-        public static final int yellomic_stop=0x7f020004;
-        public static final int yellowmic_start=0x7f020005;
+        public static final int ic_purple_mic=0x7f020001;
+        public static final int orig=0x7f020002;
+        public static final int purple_mic2=0x7f020003;
+        public static final int purple_mic2_start=0x7f020004;
+        public static final int purple_mic2_stop=0x7f020005;
+        public static final int purple_mic2_wait=0x7f020006;
+        public static final int recordbtn=0x7f020007;
+        public static final int recordbutton=0x7f020008;
+        public static final int yellomic_stop=0x7f020009;
+        public static final int yellowmic_start=0x7f02000a;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000b;
-        public static final int btnLogin=0x7f080006;
-        public static final int etPassword=0x7f080005;
-        public static final int etUsername=0x7f080004;
-        public static final int ibtnMic=0x7f080007;
-        public static final int imageButton1=0x7f080003;
+        public static final int action_settings=0x7f08000c;
+        public static final int btnLogin=0x7f080005;
+        public static final int etPassword=0x7f080004;
+        public static final int etUsername=0x7f080003;
+        public static final int ibtnMic=0x7f080006;
         public static final int listView1=0x7f080001;
-        public static final int list_username=0x7f080009;
+        public static final int list_username=0x7f08000a;
         public static final int mediaController1=0x7f080002;
+        public static final int miRecord=0x7f08000d;
         public static final int relativeLayout=0x7f080000;
-        public static final int trackMeta=0x7f08000a;
-        public static final int trackName=0x7f080008;
+        public static final int swPrivate=0x7f080008;
+        public static final int trackMeta=0x7f08000b;
+        public static final int trackName=0x7f080009;
+        public static final int tvTimeDisplay=0x7f080007;
     }
     public static final class layout {
         public static final int activity_list=0x7f030000;
@@ -52,7 +59,8 @@ public final class R {
     public static final class menu {
         public static final int list=0x7f070000;
         public static final int main=0x7f070001;
-        public static final int play=0x7f070002;
+        public static final int menu_list=0x7f070002;
+        public static final int play=0x7f070003;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;

@@ -7,12 +7,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soundcloud.api.ApiWrapper;
@@ -28,12 +33,105 @@ public class RecordActivity extends FragmentActivity {
     private static final String LOG_TAG = "RecordActivity";
 
     private ImageButton ibtnMic;
-	private boolean isRecording = false;
+    private Switch swPrivate;
+	private enum RecordState { NONE, RECORDING, UPLOADING };
+	
+	private RecordState recordState = RecordState.NONE;
     private MediaRecorder mRecorder = null;
     private String mFileName;
 	private ApiWrapper wrapper;
 	private Token token;
     private int tmpfileNumber = 0; 
+    
+	private Handler mHandler = new Handler();
+	private long mStartTime = 0L;
+	private TextView tvTimeDisplay;
+
+    
+    private static class AudioClip {
+    	public String clipName;
+    	public String filePath;
+    	
+    	public AudioClip(String clipName, String filePath) {
+    		this.clipName = clipName;
+    		this.filePath = filePath;    		
+    	}
+    	
+    }
+    
+    private class UploadToSoundCloudTask extends AsyncTask<AudioClip, Integer, Integer> {
+    	private RecordActivity recordActivity;
+    	private ApiWrapper wrapper;
+    	private String clipName;
+    	
+    	public UploadToSoundCloudTask(RecordActivity recordActivity, ApiWrapper wrapper) {
+    		this.recordActivity =  recordActivity;
+    		this.wrapper = wrapper;
+    	}
+    	
+        protected Integer doInBackground(AudioClip... clips) {
+			try {
+				Log.d("DDDDD", "uploading in background...");
+				this.clipName = clips[0].clipName;
+				File audioFile = new File(clips[0].filePath);
+				audioFile.setReadable(true, false);
+				HttpResponse resp = wrapper.post(Request.to(Endpoints.TRACKS)
+						.add(Params.Track.TITLE, this.clipName)
+						.add(Params.Track.TAG_LIST, "demo upload")
+						.add(Params.Track.SHARING, 
+								swPrivate.isChecked()? Params.Track.PRIVATE : Params.Track.PUBLIC)
+						.withFile(Params.Track.ASSET_DATA, audioFile));
+				Log.d("DDDDD", "background thread done...");
+				return Integer.valueOf(resp.getStatusLine().getStatusCode());
+			} catch (IOException exp) {
+				Log.d("DDDDD",
+						"Error uploading audioclip: IOException: "
+								+ exp.toString());
+				return Integer.valueOf(500);
+			}
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+        }
+
+        protected void onPostExecute(Integer result) {
+			Log.d("DDDDD", "UI thread resume: got result...");
+			if (result.intValue() == HttpStatus.SC_CREATED) {
+				Toast.makeText(
+						this.recordActivity,
+						"upload successful: "
+								+ ": " + clipName, Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(
+						this.recordActivity,
+						"Invalid status received: " + result.toString()
+								+ ": " + mFileName, Toast.LENGTH_SHORT).show();
+			}
+			recordState = RecordState.NONE;
+	        ibtnMic.setBackgroundResource(R.drawable.purple_mic2_start);    		
+        }
+    }
+    
+
+	private Runnable mUpdateTimeTask = new Runnable() {
+		   public void run() {
+		       final long start = mStartTime;
+		       long millis = SystemClock.uptimeMillis() - start;
+		       int seconds = (int) (millis / 1000);
+		       int minutes = seconds / 60;
+		       seconds     = seconds % 60;
+
+		       if (seconds < 10) {
+		           tvTimeDisplay.setText("" + minutes + ":0" + seconds);
+		       } else {
+		           tvTimeDisplay.setText("" + minutes + ":" + seconds);            
+		       }
+		     
+		       mHandler.postAtTime(this,
+		               start + (((minutes * 60) + seconds + 1) * 1000));
+		   }
+		};
+		
 
 
     @Override
@@ -49,6 +147,7 @@ public class RecordActivity extends FragmentActivity {
                 token);
 
 		this.ibtnMic = (ImageButton) findViewById(R.id.ibtnMic); 
+		this.swPrivate = (Switch) findViewById(R.id.swPrivate);
 
     }
 
@@ -57,20 +156,35 @@ public class RecordActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        
+        tvTimeDisplay = (TextView) findViewById(R.id.tvTimeDisplay);
+
         return true;
     }
     
-    public void onYellowMicClick(View view) {
-		if (!isRecording) {
-			isRecording = true;
-            ibtnMic.setBackgroundResource(R.drawable.yellomic_stop);
-            startRecording();
-		} else {
-			isRecording = false;
-			ibtnMic.setBackgroundResource(R.drawable.yellowmic_start);
-			stopRecording();			
-			Toast.makeText(this, "Sound saved!", Toast.LENGTH_SHORT).show();
-		}
+    public void onMicClick(View view) {
+    	switch (recordState) {
+    	case NONE:
+    		recordState = RecordState.RECORDING;
+            ibtnMic.setBackgroundResource(R.drawable.purple_mic2_stop);
+			tvTimeDisplay.setText("0:00");
+			mStartTime = SystemClock.uptimeMillis();
+            mHandler.removeCallbacks(mUpdateTimeTask);
+            mHandler.postDelayed(mUpdateTimeTask, 100);
+    		startRecording();
+    		break;
+    	case RECORDING:
+    		recordState = RecordState.NONE;
+            ibtnMic.setBackgroundResource(R.drawable.purple_mic2_start);
+			mHandler.removeCallbacks(mUpdateTimeTask);
+			mStartTime = 0L;
+			tvTimeDisplay.setText("0:00");
+    		stopRecording();
+    		break;
+    	case UPLOADING:
+    		Log.d("DDDDD", "do nothing while uploading...");
+    		break;
+    	}
     }
     
     private void startRecording() {
@@ -101,26 +215,12 @@ public class RecordActivity extends FragmentActivity {
     }
     
 	public void onNamePicked(String clipName) {
+		recordState = RecordState.UPLOADING;
+        ibtnMic.setBackgroundResource(R.drawable.purple_mic2_wait);    		
 		try {
-			File audioFile = new File(mFileName);
-			audioFile.setReadable(true, false);
 			Toast.makeText(this, "uploading to soundcloud...", Toast.LENGTH_SHORT).show();
-			HttpResponse resp = wrapper.post(Request.to(Endpoints.TRACKS)
-					.add(Params.Track.TITLE, clipName)
-					.add(Params.Track.TAG_LIST, "demo upload")
-					.withFile(Params.Track.ASSET_DATA, audioFile));
-
-			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-				Toast.makeText(
-						this,
-						"upload successful: "
-								+ ": " + clipName, Toast.LENGTH_LONG).show();
-			} else {
-				Toast.makeText(
-						this,
-						"Invalid status received: " + resp.getStatusLine()
-								+ ": " + mFileName, Toast.LENGTH_SHORT).show();
-			}
+			UploadToSoundCloudTask uploadTask = new UploadToSoundCloudTask(this, wrapper);
+			uploadTask.execute(new AudioClip(clipName, mFileName));			
 		} catch (Exception exp) {
 			Log.e("ERR", "ERR: " + exp.toString());
 		}

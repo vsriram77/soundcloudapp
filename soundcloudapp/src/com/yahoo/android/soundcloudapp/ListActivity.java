@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,11 +25,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.Toast;
 
-import com.yahoo.android.soundcloudapp.models.Track;
 import com.soundcloud.api.ApiWrapper;
 import com.soundcloud.api.Request;
 import com.soundcloud.api.Token;
+import com.yahoo.android.soundcloudapp.models.Track;
 
 public class ListActivity extends Activity implements OnPreparedListener, MediaController.MediaPlayerControl {
 	
@@ -44,6 +46,7 @@ public class ListActivity extends Activity implements OnPreparedListener, MediaC
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_list);
 		
 		
@@ -101,8 +104,25 @@ public class ListActivity extends Activity implements OnPreparedListener, MediaC
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.list, menu);
+		getMenuInflater().inflate(R.menu.menu_list, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		//Toast.makeText(this, "got menu callback!", Toast.LENGTH_SHORT).show();
+		Log.d("DDDDD", "onOptionsItemSelected called");
+		switch (item.getItemId()) {
+		case R.id.miRecord:
+	        Intent i = new Intent(this, RecordActivity.class);
+	        i.putExtra("token", token);
+	        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+	        startActivity(i);
+			return true;
+		default:
+			
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	public void start() {
