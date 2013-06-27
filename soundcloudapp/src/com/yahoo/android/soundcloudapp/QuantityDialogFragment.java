@@ -19,8 +19,8 @@ public class QuantityDialogFragment extends DialogFragment implements OnClickLis
         editQuantity = new EditText(getActivity());
         editQuantity.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT);
 
-        return new AlertDialog.Builder(getActivity()).setTitle(R.string.app_name).setMessage("Please Enter Quantity")
-                .setPositiveButton("OK", this).setNegativeButton("CANCEL", null).setView(editQuantity).create();
+        return new AlertDialog.Builder(getActivity()).setTitle(R.string.app_name).setMessage("Give your audio clip a name")
+                .setPositiveButton("Save", this).setNegativeButton("Discard", null).setView(editQuantity).create();
 
     }
 
@@ -28,9 +28,10 @@ public class QuantityDialogFragment extends DialogFragment implements OnClickLis
     public void onClick(DialogInterface dialog, int position) {
 
         String value = editQuantity.getText().toString();
-        Log.d("Quantity: ", value);
-        RecordActivityOld callingActivity = (RecordActivityOld) getActivity();
-        callingActivity.onUserSelectValue(value);
+        Log.d("DDDDD", "*********** ClipName: " + value);
+        Log.d("DDDDD", "*********** Position: " + String.valueOf(position));
+        RecordActivity callingActivity = (RecordActivity) getActivity();
+        callingActivity.onNamePicked(value);
         dialog.dismiss();
     }
 

@@ -35,8 +35,8 @@ public class LoginActivity extends Activity {
         etPasswd = (EditText) findViewById(R.id.etPassword);
         loginButton = (Button) findViewById(R.id.btnLogin);
         
-        etUsername.setText("adi2188");
-        etPasswd.setText("abcd123");
+        etUsername.setText("scdemo");
+        etPasswd.setText("fun1ne");
         
     }
     
