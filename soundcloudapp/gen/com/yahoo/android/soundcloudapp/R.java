@@ -23,31 +23,49 @@ public final class R {
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int ic_purple_mic=0x7f020001;
-        public static final int orig=0x7f020002;
-        public static final int purple_mic2=0x7f020003;
-        public static final int purple_mic2_start=0x7f020004;
-        public static final int purple_mic2_stop=0x7f020005;
-        public static final int purple_mic2_wait=0x7f020006;
-        public static final int recordbtn=0x7f020007;
-        public static final int recordbutton=0x7f020008;
-        public static final int yellomic_stop=0x7f020009;
-        public static final int yellowmic_start=0x7f02000a;
+        public static final int media_play=0x7f020002;
+        public static final int media_playback_pause_orange=0x7f020003;
+        public static final int media_playback_start_orange=0x7f020004;
+        public static final int media_playback_stop_orange=0x7f020005;
+        public static final int media_seek_backward_orange=0x7f020006;
+        public static final int media_seek_forward_orange=0x7f020007;
+        public static final int orig=0x7f020008;
+        public static final int purple_mic2=0x7f020009;
+        public static final int purple_mic2_start=0x7f02000a;
+        public static final int purple_mic2_stop=0x7f02000b;
+        public static final int purple_mic2_wait=0x7f02000c;
+        public static final int recordbtn=0x7f02000d;
+        public static final int recordbutton=0x7f02000e;
+        public static final int seek_backward=0x7f02000f;
+        public static final int seek_forward=0x7f020010;
+        public static final int soundcloud=0x7f020011;
+        public static final int yellomic_stop=0x7f020012;
+        public static final int yellowmic_start=0x7f020013;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000c;
+        public static final int action_settings=0x7f080015;
+        public static final int btnForward=0x7f08000e;
         public static final int btnLogin=0x7f080005;
+        public static final int btnPlayPause=0x7f08000b;
+        public static final int btnRewind=0x7f08000c;
+        public static final int btnStop=0x7f08000a;
         public static final int etPassword=0x7f080004;
         public static final int etUsername=0x7f080003;
-        public static final int ibtnMic=0x7f080006;
+        public static final int ibtnMic=0x7f080010;
+        public static final int imageButton1=0x7f08000d;
+        public static final int imageView1=0x7f08000f;
         public static final int listView1=0x7f080001;
-        public static final int list_username=0x7f08000a;
+        public static final int list_username=0x7f080013;
         public static final int mediaController1=0x7f080002;
-        public static final int miRecord=0x7f08000d;
+        public static final int miRecord=0x7f080016;
         public static final int relativeLayout=0x7f080000;
-        public static final int swPrivate=0x7f080008;
-        public static final int trackMeta=0x7f08000b;
-        public static final int trackName=0x7f080009;
-        public static final int tvTimeDisplay=0x7f080007;
+        public static final int sbTrackProgress=0x7f080008;
+        public static final int trackMeta=0x7f080014;
+        public static final int trackName=0x7f080012;
+        public static final int tv=0x7f080007;
+        public static final int tvTimeDisplay=0x7f080011;
+        public static final int tvTrackProgress=0x7f080009;
+        public static final int tvTrackTitle=0x7f080006;
     }
     public static final class layout {
         public static final int activity_list=0x7f030000;

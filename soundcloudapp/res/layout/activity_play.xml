@@ -6,13 +6,80 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".PlayActivity" >
+    tools:context=".StreamTrackActivity" >
 
-    <MediaController
-        android:id="@+id/mediaController1"
+    <TextView
+        android:id="@+id/tvTrackTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv"
+        android:layout_alignRight="@+id/sbTrackProgress"
+        android:layout_below="@+id/tv"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    </MediaController>
+    <TextView
+        android:id="@+id/tvTrackProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sbTrackProgress"
+        android:layout_alignLeft="@+id/sbTrackProgress"
+        android:layout_alignRight="@+id/btnStop" />
+
+    <ImageButton
+        android:id="@+id/btnPlayPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/media_playback_pause_orange" />
+
+    <ImageButton
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btnRewind"
+        android:src="@drawable/media_playback_stop_orange" />
+
+    <SeekBar
+        android:id="@+id/sbTrackProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnRewind"
+        android:layout_alignLeft="@+id/imageButton1"
+        android:layout_marginBottom="18dp" />
+
+    <ImageButton
+        android:id="@+id/btnForward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnStop"
+        android:layout_toLeftOf="@+id/btnStop"
+        android:src="@drawable/media_seek_forward_orange" />
+
+    <ImageButton
+        android:id="@+id/btnRewind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnPlayPause"
+        android:layout_toRightOf="@+id/btnPlayPause"
+        android:src="@drawable/media_seek_backward_orange" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvTrackProgress"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvTrackTitle"
+        android:src="@drawable/soundcloud" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvTrackProgress"
+        android:layout_alignParentTop="true"
+        android:text="Now Playing:" />
 
 </RelativeLayout>

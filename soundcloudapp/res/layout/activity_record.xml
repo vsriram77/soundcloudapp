@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -25,18 +24,5 @@
             android:background="#800080"            	
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <Switch
-            android:id="@+id/swPrivate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Private Mode" 
-                        android:textSize="30sp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:typeface="monospace"
-            android:textStyle="bold"    
-            android:textColor="#ffffff"             
-            android:background="#DDA0DD"            	            
-            />
 
 </LinearLayout>

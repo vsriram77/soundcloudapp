@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +32,6 @@ public class RecordActivity extends FragmentActivity {
     private static final String LOG_TAG = "RecordActivity";
 
     private ImageButton ibtnMic;
-    private Switch swPrivate;
 	private enum RecordState { NONE, RECORDING, UPLOADING };
 	
 	private RecordState recordState = RecordState.NONE;
@@ -78,8 +76,6 @@ public class RecordActivity extends FragmentActivity {
 				HttpResponse resp = wrapper.post(Request.to(Endpoints.TRACKS)
 						.add(Params.Track.TITLE, this.clipName)
 						.add(Params.Track.TAG_LIST, "demo upload")
-						.add(Params.Track.SHARING, 
-								swPrivate.isChecked()? Params.Track.PRIVATE : Params.Track.PUBLIC)
 						.withFile(Params.Track.ASSET_DATA, audioFile));
 				Log.d("DDDDD", "background thread done...");
 				return Integer.valueOf(resp.getStatusLine().getStatusCode());
@@ -147,7 +143,6 @@ public class RecordActivity extends FragmentActivity {
                 token);
 
 		this.ibtnMic = (ImageButton) findViewById(R.id.ibtnMic); 
-		this.swPrivate = (Switch) findViewById(R.id.swPrivate);
 
     }
 
@@ -225,5 +220,10 @@ public class RecordActivity extends FragmentActivity {
 			Log.e("ERR", "ERR: " + exp.toString());
 		}
 	}
+	
+	@Override
+    public void onDestroy(){
+    	super.onDestroy();
+    }
 
 }
