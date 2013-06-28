@@ -3,7 +3,7 @@
     
         <item
         android:id="@+id/miRecord"
-        android:icon="@drawable/purple_rec_mic"
+        android:icon="@drawable/recordbutton"
         android:showAsAction="ifRoom|withText"
         android:title="Record">
     </item>
