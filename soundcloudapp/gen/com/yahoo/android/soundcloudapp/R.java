@@ -34,13 +34,15 @@ public final class R {
         public static final int purple_mic2_start=0x7f02000a;
         public static final int purple_mic2_stop=0x7f02000b;
         public static final int purple_mic2_wait=0x7f02000c;
-        public static final int recordbtn=0x7f02000d;
-        public static final int recordbutton=0x7f02000e;
-        public static final int seek_backward=0x7f02000f;
-        public static final int seek_forward=0x7f020010;
-        public static final int soundcloud=0x7f020011;
-        public static final int yellomic_stop=0x7f020012;
-        public static final int yellowmic_start=0x7f020013;
+        public static final int purple_rec_menu=0x7f02000d;
+        public static final int purple_rec_mic=0x7f02000e;
+        public static final int recordbtn=0x7f02000f;
+        public static final int recordbutton=0x7f020010;
+        public static final int seek_backward=0x7f020011;
+        public static final int seek_forward=0x7f020012;
+        public static final int soundcloud=0x7f020013;
+        public static final int yellomic_stop=0x7f020014;
+        public static final int yellowmic_start=0x7f020015;
     }
     public static final class id {
         public static final int action_settings=0x7f080015;
